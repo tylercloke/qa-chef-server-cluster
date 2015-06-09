@@ -1,4 +1,4 @@
-node.default['qa-chef-server-cluster']['chef-provisioner-key-name'] = 'insecure-chef-provisioner'
+node.default['qa-chef-server-cluster']['chef-provisioner-key-name'] = 'unsecured-chef-provisioner'
 
 node.default['qa-chef-server-cluster']['aws']['region'] = 'us-west-2'
 node.default['qa-chef-server-cluster']['aws']['availability_zone'] = 'b'
