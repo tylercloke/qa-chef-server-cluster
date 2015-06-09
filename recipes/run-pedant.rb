@@ -20,4 +20,5 @@
 
 include_recipe 'qa-chef-server-cluster::chef-server-readiness'
 
+execute 'chef-server-ctl stop opscode-erchef'
 execute 'chef-server-ctl test'

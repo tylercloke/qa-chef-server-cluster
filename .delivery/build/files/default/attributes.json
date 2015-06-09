@@ -1,0 +1,23 @@
+{
+    "_comment": "If you are having to edit the json attributes file then I'm doing it wrong. Please submit an issue: https://github.com/opscode/qa-chef-server-cluster/issues",
+    "qa-chef-server-cluster": {
+	"chef-server-core": {
+	},
+	"opscode-manage": {
+	},
+	"chef-ha": {
+	},
+	"aws": {
+	    "machine_options": {
+		"aws_tags": {
+		    "X-Project": "qa-chef-server-cluster-delivery-builder"
+		},
+		"ssh_username": "ubuntu",
+		"bootstrap_options": {
+		    "image_id": "ami-3d50120d",
+		    "instance_type": "m3.medium"
+		}
+	    }
+	}
+    }
+}

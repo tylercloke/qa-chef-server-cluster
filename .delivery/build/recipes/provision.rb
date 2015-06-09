@@ -29,6 +29,13 @@ file ssh_public_key_path do
   mode '0644'
 end
 
+attributes_file = File.join(cache, 'attributes.json')
+
+cookbook_file "attributes.json" do
+  path attributes_file
+  action :create
+end
+
 template File.join(cache, '.aws/config') do
   sensitive true
   source 'aws-config.erb'
@@ -39,20 +46,43 @@ template File.join(cache, '.aws/config') do
   )
 end
 
-ruby_block 'public' do
+# template File.join(path, 'data_bags/secrets/lob-user-key.json') do
+#   sensitive true
+#   source 'lob-user-key.json.erb'
+#   variables(
+#     private_key_path: ssh_private_key_path,
+#     public_key_path:  ssh_public_key_path
+#   )
+# end
+
+repo_knife_file = File.join(path, ".chef/knife.rb")
+
+execute "chef exec rake prep" do
+  cwd path
+end
+
+# TODO how do we make sure we don't leave any nodes spun up
+
+ruby_block "stand up machine" do
   block do
-    Chef::Log.fatal File.read(ssh_public_key_path)
+    Dir.chdir path
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server", {:live_stream => STDOUT})
   end
 end
 
-ruby_block 'private' do
+ruby_block "run pedant" do
   block do
-    Chef::Log.fatal File.read(ssh_private_key_path)
+    Dir.chdir path
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-test", {:live_stream => STDOUT})
   end
 end
 
-ruby_block 'aws' do
+ruby_block "destroy machine" do
   block do
-    Chef::Log.fatal File.read(File.join(cache, '.aws/config'))
+    Dir.chdir path
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-destroy", {:live_stream => STDOUT})
   end
 end
+
+
+

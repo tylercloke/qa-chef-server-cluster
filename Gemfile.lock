@@ -37,8 +37,8 @@ GEM
     celluloid-io (0.16.2)
       celluloid (>= 0.16.0)
       nio4r (>= 1.1.0)
-    chef (12.2.1)
-      chef-zero (~> 4.0)
+    chef (12.3.0)
+      chef-zero (~> 4.1)
       diff-lcs (~> 1.2, >= 1.2.4)
       erubis (~> 2.7)
       ffi-yajl (>= 1.2, < 3.0)
@@ -198,7 +198,7 @@ GEM
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
     semverse (1.2.1)
-    serverspec (2.17.0)
+    serverspec (2.17.1)
       multi_json
       rspec (~> 3.0)
       rspec-its
@@ -207,7 +207,7 @@ GEM
     solve (1.2.1)
       dep_selector (~> 1.0)
       semverse (~> 1.1)
-    specinfra (2.34.6)
+    specinfra (2.34.8)
       net-scp
       net-ssh
     systemu (2.6.5)
@@ -234,6 +234,6 @@ PLATFORMS
 
 DEPENDENCIES
   berkshelf (= 3.2.3)
-  chef (= 12.2.1)
+  chef (= 12.3.0)
   chef-provisioning (= 1.2.0)
   chef-provisioning-aws (= 1.2.1)
