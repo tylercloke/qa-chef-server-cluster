@@ -32,7 +32,7 @@ with_machine_options(provisioner_machine_opts)
 
 chef_server_files_dir = node.default['qa-chef-server-cluster']['chef-server']['file-dir'] = File.join(Chef::Config[:chef_repo_path], '.chef', 'stash')
 
-directory node['qa-chef-server-cluster']['chef-server']['file-dir'] do
+directory chef_server_files_dir do
   mode 0700
   recursive true
 end
@@ -60,6 +60,7 @@ end
 aws_key_pair node['qa-chef-server-cluster']['aws']['machine_options']['bootstrap_options']['key_name'] do
   private_key_path priv_key
   public_key_path pub_key
+  allow_overwrite true
 end
 
 # set attribute so clusters know where to find bootstrapped server files
