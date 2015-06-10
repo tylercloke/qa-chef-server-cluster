@@ -30,12 +30,6 @@ ChefHelpers.symbolize_keys_deep!(provisioner_machine_opts)
 
 with_machine_options(provisioner_machine_opts)
 
-keys_dir = File.join(Chef::Config[:chef_repo_path], 'keys')
-directory keys_dir do
-  mode 0700
-  recursive true
-end
-
 chef_server_files_dir = node.default['qa-chef-server-cluster']['chef-server']['file-dir'] = File.join(Chef::Config[:chef_repo_path], 'stash')
 
 directory node['qa-chef-server-cluster']['chef-server']['file-dir'] do
@@ -43,14 +37,14 @@ directory node['qa-chef-server-cluster']['chef-server']['file-dir'] do
   recursive true
 end
 
-priv_key = File.join(keys_dir, 'id_rsa')
+priv_key = File.join(Chef::Config.private_key_paths, 'id_rsa')
 file priv_key do
   mode 0600
   content node['qa-chef-server-cluster']['private-key']
   sensitive true
 end
 
-pub_key = File.join(keys_dir, 'id_rsa.pub')
+pub_key = File.join(Chef::Config.private_key_paths, 'id_rsa.pub')
 file pub_key do
   mode 0600
   content node['qa-chef-server-cluster']['public-key']
