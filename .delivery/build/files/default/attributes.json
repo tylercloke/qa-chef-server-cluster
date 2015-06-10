@@ -2,6 +2,9 @@
     "_comment": "If you are having to edit the json attributes file then I'm doing it wrong. Please submit an issue: https://github.com/opscode/qa-chef-server-cluster/issues",
     "qa-chef-server-cluster": {
 	"chef-server-core": {
+	    "install": {
+		"version":"latest_current"
+	    }
 	},
 	"opscode-manage": {
 	},

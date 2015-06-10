@@ -66,21 +66,21 @@ end
 ruby_block "stand up machine" do
   block do
     Dir.chdir path
-    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server", {:live_stream => STDOUT})
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::ha-cluster", {:live_stream => STDOUT})
   end
 end
 
 ruby_block "run pedant" do
   block do
     Dir.chdir path
-    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-test", {:live_stream => STDOUT})
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::ha-cluster-test", {:live_stream => STDOUT})
   end
 end
 
 ruby_block "destroy machine" do
   block do
     Dir.chdir path
-    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-destroy", {:live_stream => STDOUT})
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::ha-cluster-destroy", {:live_stream => STDOUT})
   end
 end
 
