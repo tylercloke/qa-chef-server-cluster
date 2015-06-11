@@ -4,6 +4,8 @@
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 
+chef_gem 'syslog_logger'
+
 delivery_secrets = get_project_secrets
 path             = node['delivery']['workspace']['repo']
 cache            = node['delivery']['workspace']['cache']
