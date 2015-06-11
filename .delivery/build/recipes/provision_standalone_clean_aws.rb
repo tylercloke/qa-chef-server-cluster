@@ -68,7 +68,7 @@ end
 # TODO: how do we make sure we don't leave any nodes spun up
 
 # rubocop:disable LineLength
-ruby_block 'see if cache exists' do
+ruby_block 'Cleanup AWS instances' do
   block do
     puts ''
     Dir.chdir path
@@ -76,7 +76,8 @@ ruby_block 'see if cache exists' do
     nodes['Reservations'].each do |reservation|
       reservation['Instances'].each do |instance|
         if Time.now - Date.parse(instance['LaunchTime']).to_time > (24 * 60 * 60)
-          puts instance['InstanceId']
+          Chef::Log.warn "Terminating EC2 Instance #{instance['InstanceId']} which has been running since #{instance['LaunchTime']}"
+          Mixlib::ShellOut.new("aws ec2 terminate-instances --instance-ids #{instance['InstanceId']}").run_command
         end
       end
     end
