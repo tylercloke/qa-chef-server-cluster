@@ -111,6 +111,7 @@ ruby_block 'destroy-machine' do
   action :run
 end
 
-fail unless node['pedant_success']
+
+raise unless node['pedant_success'] # rubocop:disable SignalException
 
 # rubocop:enable LineLength
