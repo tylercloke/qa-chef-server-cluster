@@ -10,7 +10,7 @@ github_repo = node['delivery']['config']['delivery-truck']['publish']['github']
 
 delivery_github github_repo do
   deploy_key secrets['github']
-  branch node['delivery']['config']['delivery-truck']['publish']['branch']
+  branch node['delivery']['change']['pipeline']
   remote_url "git@github.com:#{github_repo}.git"
   repo_path node['delivery']['workspace']['repo']
   cache_path node['delivery']['workspace']['cache']
