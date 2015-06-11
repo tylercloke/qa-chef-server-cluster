@@ -17,3 +17,4 @@ node_path [ File.join(current_dir, 'nodes') ]
 cache_path File.join(current_dir, 'local-mode-cache')
 
 log_level :info
+

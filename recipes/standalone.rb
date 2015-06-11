@@ -26,4 +26,4 @@ chef_server_ingredient 'chef-server-core' do
   action :reconfigure
 end
 
-install_opscode_manage
+# install_opscode_manage
