@@ -1,4 +1,5 @@
 # build
 
-TODO: Enter the cookbook description here.
+Cookbook for building test infrastructure via qa-chef-server-cluster.
+
 
