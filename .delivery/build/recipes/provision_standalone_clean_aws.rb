@@ -111,6 +111,11 @@ ruby_block 'destroy-machine' do
   action :run
 end
 
-Chef::Application.fatal!('Pedant failed!', 1) unless node['pedant_success']
+ruby_block 'Fail if Pedant Failed' do
+  block do
+    Chef::Application.fatal!('Pedant failed!', 1)
+  end
+  not_if { node['pedant_success'] }
+end
 
 # rubocop:enable LineLength
