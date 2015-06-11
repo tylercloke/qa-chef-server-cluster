@@ -91,11 +91,11 @@ end
 ruby_block 'run-pedant' do
   block do
     begin
-      node['pedant_success'] = true
+      node.run_state['pedant_success'] = true
       Dir.chdir path
       shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-test", live_stream: STDOUT, timeout: 7200)
     rescue
-      node['pedant_success'] = false
+      node.run_state['pedant_success'] = false
       Chef::Log.fatal 'Pedant Failed!'
     end
   end
@@ -115,7 +115,7 @@ ruby_block 'Fail if Pedant Failed' do
   block do
     Chef::Application.fatal!('Pedant failed!', 1)
   end
-  not_if { node['pedant_success'] }
+  not_if { node.run_state['pedant_success'] }
 end
 
 # rubocop:enable LineLength
