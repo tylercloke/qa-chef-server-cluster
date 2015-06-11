@@ -73,7 +73,7 @@ ruby_block 'see if cache exists' do
     nodes = JSON.parse(Mixlib::ShellOut.new('aws ec2 describe-instances --filters "Name=tag-value,Values=qa-chef-server-cluster-delivery-builder" "Name=tag-value,Values=standalone"').run_command.stdout)
     nodes['Reservations'].each do |reservation|
       reservation['Instances'].each do |instance|
-        if Time.now - Date.parse(instance['LaunchTime']).to_time > (24*60*60)
+        if Time.now - Date.parse(instance['LaunchTime']).to_time > (24 * 60 * 60)
           puts instance['InstanceId']
         end
       end
@@ -95,7 +95,7 @@ ruby_block 'run-pedant' do
       Dir.chdir path
       shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-test", live_stream: STDOUT, timeout: 7200)
     rescue
-      node['pedant_failure'] = false
+      node['pedant_success'] = false
       Chef::Log.fatal 'Pedant Failed!'
     end
   end
@@ -111,7 +111,6 @@ ruby_block 'destroy-machine' do
   action :run
 end
 
-
-raise unless node['pedant_success'] # rubocop:disable SignalException
+Chef::Application.fatal!('Pedant failed!', 1) unless node['pedant_success']
 
 # rubocop:enable LineLength
