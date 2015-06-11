@@ -65,6 +65,14 @@ end
 
 # TODO: how do we make sure we don't leave any nodes spun up
 
+ruby_block 'get ips before' do
+  block do
+    Dir.chdir path
+    shell_out!('chef exec bundle exec rake ip_search', live_stream: STDOUT, timeout: 7200)
+  end
+end
+
+
 # rubocop:disable LineLength
 ruby_block 'stand-up-machine' do
   block do
@@ -90,8 +98,11 @@ ruby_block 'run-pedant' do
   ignore_failure true
 end
 
-execute 'chef exec bundle exec rake ip_search' do
-  cwd path
+ruby_block 'get ips after' do
+  block do
+    Dir.chdir path
+    shell_out!('chef exec bundle exec rake ip_search', live_stream: STDOUT, timeout: 7200)
+  end
 end
 
 # ruby_block 'destroy-machine' do
