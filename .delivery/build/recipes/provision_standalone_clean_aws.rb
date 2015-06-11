@@ -65,51 +65,57 @@ end
 
 # TODO: how do we make sure we don't leave any nodes spun up
 
-ruby_block 'get ips before' do
-  block do
-    Dir.chdir path
-    shell_out!('chef exec bundle exec rake ip_search', live_stream: STDOUT, timeout: 7200)
-  end
-end
-
-
 # rubocop:disable LineLength
-ruby_block 'stand-up-machine' do
+ruby_block 'see if cache exists' do
   block do
     Dir.chdir path
-    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server", live_stream: STDOUT, timeout: 7200)
-  end
-end
-
-ruby_block 'run-pedant' do
-  block do
-    begin
-      Chef::Log.fatal 'p-p-pedant'
-      Dir.chdir path
-      shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-test", live_stream: STDOUT, timeout: 7200)
-    rescue Exception => e
-      Chef::Log.fatal 'get excepted'
-      Chef::Log.fatal e
-      Chef::Log.fatal 'get excepted 2'
-      Chef::Log.fatal e.class
-      Chef::Log.fatal e.inspect
+    nodes = JSON.parse(Mixlib::ShellOut.new('aws ec2 describe-instances --filters "Name=tag-value,Values=qa-chef-server-cluster-delivery-builder"').run_command.stdout)
+    nodes['Reservations'].each do |reservation|
+      reservation['Instances'].each do |instance|
+        puts instance['InstanceId']
+      end
     end
   end
-  ignore_failure true
 end
 
-ruby_block 'get ips after' do
-  block do
-    Dir.chdir path
-    shell_out!('chef exec bundle exec rake ip_search', live_stream: STDOUT, timeout: 7200)
-  end
-end
 
-# ruby_block 'destroy-machine' do
+#
+# ruby_block 'stand-up-machine' do
 #   block do
-#     shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-destroy", live_stream: STDOUT, timeout: 7200)
+#     Dir.chdir path
+#     shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server", live_stream: STDOUT, timeout: 7200)
 #   end
-#   action :run
 # end
-
-# rubocop:enable LineLength
+#
+# ruby_block 'run-pedant' do
+#   block do
+#     begin
+#       Chef::Log.fatal 'p-p-pedant'
+#       Dir.chdir path
+#       shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-test", live_stream: STDOUT, timeout: 7200)
+#     rescue Exception => e
+#       Chef::Log.fatal 'get excepted'
+#       Chef::Log.fatal e
+#       Chef::Log.fatal 'get excepted 2'
+#       Chef::Log.fatal e.class
+#       Chef::Log.fatal e.inspect
+#     end
+#   end
+#   ignore_failure true
+# end
+#
+# ruby_block 'get ips after' do
+#   block do
+#     Dir.chdir path
+#     shell_out!('chef exec bundle exec rake ip_search', live_stream: STDOUT, timeout: 7200)
+#   end
+# end
+#
+# # ruby_block 'destroy-machine' do
+# #   block do
+# #     shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-destroy", live_stream: STDOUT, timeout: 7200)
+# #   end
+# #   action :run
+# # end
+#
+# # rubocop:enable LineLength
