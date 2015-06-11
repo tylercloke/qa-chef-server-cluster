@@ -4,10 +4,15 @@
     "path": ".delivery/build",
     "name": "build"
   },
+  "delivery-truck": {
+    "publish": {
+      "github": "tylercloke/qa-chef-server-cluster",
+      "branch": "delivery"
+    }
+  },
   "skip_phases": [
     "quality",
     "security",
-    "publish",
     "provision",
     "deploy",
     "smoke",
