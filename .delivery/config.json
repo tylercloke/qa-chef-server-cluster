@@ -6,8 +6,7 @@
   },
   "delivery-truck": {
     "publish": {
-      "github": "tylercloke/qa-chef-server-cluster",
-      "branch": "delivery"
+      "github": "tylercloke/qa-chef-server-cluster"
     }
   },
   "skip_phases": [
