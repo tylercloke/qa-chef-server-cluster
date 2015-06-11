@@ -3,7 +3,7 @@ maintainer       'Patrick Wright'
 maintainer_email 'patrick@chef.io'
 license          'all_rights'
 description      'Installs/Configures QA clusters'
-version          '1.0.1'
+version          '1.0.2'
 
 depends 'chef-server-cluster'
 depends 'omnibus-artifactory-artifact'
