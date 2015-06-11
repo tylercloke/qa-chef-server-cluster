@@ -69,7 +69,7 @@ end
 ruby_block 'stand-up-machine' do
   block do
     Dir.chdir path
-    # shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server", live_stream: STDOUT, timeout: 7200)
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server", live_stream: STDOUT, timeout: 7200)
   end
 end
 
@@ -90,10 +90,15 @@ ruby_block 'run-pedant' do
   ignore_failure true
 end
 
-ruby_block 'destroy-machine' do
-  block do
-    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-destroy", live_stream: STDOUT, timeout: 7200)
-  end
-  action :run
+execute 'chef exec bundle exec rake ip_search' do
+  cwd path
 end
+
+# ruby_block 'destroy-machine' do
+#   block do
+#     shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-destroy", live_stream: STDOUT, timeout: 7200)
+#   end
+#   action :run
+# end
+
 # rubocop:enable LineLength
