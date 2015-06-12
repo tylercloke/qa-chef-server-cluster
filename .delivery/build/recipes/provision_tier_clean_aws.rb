@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: build
-# Recipe:: provision_standalone_clean_aws
+# Recipe:: provision_tier_clean_aws
 #
 # Copyright (c) 2015 The Authors, All Rights Reserved.
 # rubocop:disable LineLength
@@ -10,7 +10,7 @@ repo_knife_file = File.join(path, '.chef/knife.rb')
 ruby_block 'stand-up-machine' do
   block do
     Dir.chdir path
-    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server", live_stream: STDOUT, timeout: 7200)
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::tier-cluster", live_stream: STDOUT, timeout: 7200)
   end
 end
 
@@ -19,7 +19,7 @@ ruby_block 'run-pedant' do
     begin
       node.run_state['pedant_success'] = true
       Dir.chdir path
-      shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-test", live_stream: STDOUT, timeout: 7200)
+      shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::tier-cluster-test", live_stream: STDOUT, timeout: 7200)
     rescue
       node.run_state['pedant_success'] = false
       Chef::Log.fatal 'Pedant Failed!'
@@ -32,7 +32,7 @@ end
 
 ruby_block 'destroy-machine' do
   block do
-    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::standalone-server-destroy", live_stream: STDOUT, timeout: 7200)
+    shell_out!("chef exec bundle exec chef-client --force-formatter -z -p 10257 -j #{attributes_file} -c #{repo_knife_file} -o qa-chef-server-cluster::tier-cluster-destroy", live_stream: STDOUT, timeout: 7200)
   end
   action :run
 end
