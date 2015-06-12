@@ -2,10 +2,10 @@ source 'https://supermarket.chef.io'
 
 metadata
 
-cookbook 'delivery-truck', git: 'https://github.com/opscode-cookbooks/delivery-truck.git'
-cookbook 'delivery-sugar', git: 'https://github.com/chef-cookbooks/delivery-sugar.git'
+cookbook 'delivery-truck',   git: 'https://github.com/opscode-cookbooks/delivery-truck.git'
+cookbook 'delivery-sugar',   git: 'https://github.com/chef-cookbooks/delivery-sugar.git'
 
 group :delivery do
   cookbook 'delivery-red-pill', path: 'cookbooks/delivery-red-pill'
-  cookbook 'delivery-sugar-extras', path: 'cookbooks/delivery-sugar-extras'
+  # cookbook 'delivery-sugar-extras', path: 'cookbooks/delivery-sugar-extras'
 end
